@@ -20,7 +20,6 @@
 package states;
 
 
-import cards.Card;
 import cards.Card.Attributes;
 import cards.CardFactory;
 
@@ -34,17 +33,13 @@ import util.UserInterfaceUtil;
 
 class GuideMenu extends FlxState {
 
-	var buttonBack:FlxUIButton;
-	var textCenter:FlxText;
-	var textGuide:FlxText;
-
-	var cardFactory:CardFactory;
+	private var buttonBack:FlxUIButton;
+	private var textCenter:FlxText;
+	private var textGuide:FlxText;
 	
 	override public function create()
 	{
 		super.create();
-
-		this.cardFactory = new CardFactory();
 
 		_initTexts();	
 		_initCards();
@@ -69,20 +64,25 @@ class GuideMenu extends FlxState {
 		this.textCenter.y = UserInterfaceUtil.MARGIN;
 		this.add(this.textCenter);
 
+		var totalCards:Int = 0;
+		for (att in Main.cardFactory.mapAttributePool) {
+			totalCards += att;
+		}
+
 		this.textGuide = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textGuide.text = 'Heavy Damage Unit (${this.cardFactory.mapAttributePool[DAMAGE_HEAVY]} available):\n\n' +
-							  'Light Damage Unit (${this.cardFactory.mapAttributePool[DAMAGE_LIGHT]} available):\n\n' +
-							  'Splash Damage Unit (${this.cardFactory.mapAttributePool[DAMAGE_SPLASH]} available):\n\n' +
-							  'Support Unit (${this.cardFactory.mapAttributePool[SUPPORT]} available):\n\n' +
-							  'Anti-Backline/Frontline General (${this.cardFactory.mapAttributePool[GENERAL_FRONTLINE]} available):\n\n' +
-							  'Mythics (${this.cardFactory.mapAttributePool[MYTHIC]} available):\n\n' +
-							  'Defense Enchantment (${this.cardFactory.mapAttributePool[ENCHANTMENT_DEFENSE]} available):\n\n' +
-							  'Tower Enchantment (${this.cardFactory.mapAttributePool[ENCHANTMENT_TOWER]} available):\n\n' +
-							  'Economy Enchantments (${this.cardFactory.mapAttributePool[ENCHANTMENT_ECONOMY]} available):\n\n' +
-							  'Magic/Filler Enchantments (${this.cardFactory.mapAttributePool[ENCHANTMENT_MISC]} available):\n\n' +
-							  'Light Spells (${this.cardFactory.mapAttributePool[SPELL_LIGHT]} available):\n\n' +
-							  'Heavy Spells (${this.cardFactory.mapAttributePool[SPELL_HEAVY]} available):\n\n' +
-							  'Total cards per pool: 36.';
+		this.textGuide.text = 'Heavy Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_HEAVY]} available):\n\n' +
+							  'Light Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_LIGHT]} available):\n\n' +
+							  'Splash Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_SPLASH]} available):\n\n' +
+							  'Support Unit (${Main.cardFactory.mapAttributePool[SUPPORT]} available):\n\n' +
+							  'Anti-Backline/Frontline General (${Main.cardFactory.mapAttributePool[GENERAL_FRONTLINE]} available):\n\n' +
+							  'Mythics (${Main.cardFactory.mapAttributePool[MYTHIC]} available):\n\n' +
+							  'Defense Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_DEFENSE]} available):\n\n' +
+							  'Tower Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_TOWER]} available):\n\n' +
+							  'Economy Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_ECONOMY]} available):\n\n' +
+							  'Magic/Filler Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_MISC]} available):\n\n' +
+							  'Light Spells (${Main.cardFactory.mapAttributePool[SPELL_LIGHT]} available):\n\n' +
+							  'Heavy Spells (${Main.cardFactory.mapAttributePool[SPELL_HEAVY]} available):\n\n' +
+							  'Total cards per pool: ${totalCards}.';
 		this.textGuide.size = 12;
 		this.textGuide.y = this.textCenter.y + this.textCenter.height;
 		this.add(this.textGuide);
@@ -109,10 +109,13 @@ class GuideMenu extends FlxState {
 		var baseX:Float = (this.textCenter.x + UserInterfaceUtil.MARGIN * 8) * (1 / scale);
 		var baseY:Float = this.textGuide.y;
 
+		/* If we do not do this, nothing works for some reason. */
+		Main.cardFactory.initCards();
+
 		var i:Int = 0;
 		for (att in 0 ... attributeArray.length) {
 			var j:Int = 0;
-			for (card in cardFactory.mapCards[attributeArray[att]]) {
+			for (card in Main.cardFactory.mapCards[attributeArray[att]]) {
 				card.scaleTo(scale);
 				card.moveSpriteToXY(baseX + j * card.width, baseY + i * card.height);
 				this.add(card);

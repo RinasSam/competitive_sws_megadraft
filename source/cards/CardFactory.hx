@@ -22,6 +22,8 @@ package cards;
 
 import cards.Card.Attributes;
 
+import haxe.xml.Access;
+
 
 class CardFactory {
 
@@ -34,10 +36,20 @@ class CardFactory {
 	/* Which 36 cards shall we choose? */
 	public var chosenCards:Array<Card>;
 
-	public function new()
+	/* XML Data. Needs to be loaded before we can do anything. */
+	private var _xml:Access;
+
+	public function new(xmlData:String)
 	{
+		if (xmlData == null) {
+			//this._xml = new Access(Xml.parse(sys.io.File.getContent(AssetPaths.attributes__xml)).firstChild());
+			throw new haxe.Exception("You need to load the XML data BEFORE you generate an instance of CardFactory.");
+		} else {
+			this._xml = new Access(Xml.parse(xmlData).firstChild());
+		}
+
 		_initAttributePool();
-		_initCards();
+		initCards();
 	}
 
 
@@ -47,7 +59,6 @@ class CardFactory {
 		var card:Card;
 
 		for (attrib in Type.allEnums(Attributes)) {
-
 			for (i in 0 ... mapAttributePool[attrib]) {
 				card = mapCards[attrib].splice(Math.floor(Math.random() * mapCards[attrib].length), 1)[0];
 				chosenCards.push(card);
@@ -55,7 +66,8 @@ class CardFactory {
 		}
 	}
 
-	private function _initCards()
+	/* For some reason if you do not re-init the cards they just don't work. */
+	public function initCards()
 	{
 		mapCards = new Map<Attributes, Array<Card>>();
 		
@@ -149,19 +161,22 @@ class CardFactory {
 	 */
 	private function _initAttributePool()
 	{
+		/** 
+		 * 2025/12/11: Made it so this is customisable via XML files.
+		 */		 
 		this.mapAttributePool = new Map<Attributes, Int>();
 
-		this.mapAttributePool[DAMAGE_HEAVY] = 4;
-		this.mapAttributePool[DAMAGE_LIGHT] = 4;
-		this.mapAttributePool[DAMAGE_SPLASH] = 4;
-		this.mapAttributePool[SUPPORT] = 1;
-		this.mapAttributePool[MYTHIC] = 4;
-		this.mapAttributePool[GENERAL_FRONTLINE] = 4;
-		this.mapAttributePool[ENCHANTMENT_DEFENSE] = 1;
-		this.mapAttributePool[ENCHANTMENT_TOWER] = 1;
-		this.mapAttributePool[ENCHANTMENT_ECONOMY] = 2;
-		this.mapAttributePool[ENCHANTMENT_MISC] = 4;
-		this.mapAttributePool[SPELL_LIGHT] = 3;
-		this.mapAttributePool[SPELL_HEAVY] = 4;
+		this.mapAttributePool[DAMAGE_HEAVY] = Std.parseInt(_xml.node.DAMAGE_HEAVY.innerData);
+		this.mapAttributePool[DAMAGE_LIGHT] = Std.parseInt(_xml.node.DAMAGE_LIGHT.innerData);
+		this.mapAttributePool[DAMAGE_SPLASH] = Std.parseInt(_xml.node.DAMAGE_SPLASH.innerData);
+		this.mapAttributePool[SUPPORT] = Std.parseInt(_xml.node.SUPPORT.innerData);
+		this.mapAttributePool[MYTHIC] = Std.parseInt(_xml.node.MYTHIC.innerData);
+		this.mapAttributePool[GENERAL_FRONTLINE] = Std.parseInt(_xml.node.GENERAL_FRONTLINE.innerData);
+		this.mapAttributePool[ENCHANTMENT_DEFENSE] = Std.parseInt(_xml.node.ENCHANTMENT_DEFENSE.innerData);
+		this.mapAttributePool[ENCHANTMENT_TOWER] = Std.parseInt(_xml.node.ENCHANTMENT_TOWER.innerData);
+		this.mapAttributePool[ENCHANTMENT_ECONOMY] = Std.parseInt(_xml.node.ENCHANTMENT_ECONOMY.innerData);
+		this.mapAttributePool[ENCHANTMENT_MISC] = Std.parseInt(_xml.node.ENCHANTMENT_MISC.innerData);
+		this.mapAttributePool[SPELL_LIGHT] = Std.parseInt(_xml.node.SPELL_LIGHT.innerData);
+		this.mapAttributePool[SPELL_HEAVY] = Std.parseInt(_xml.node.SPELL_HEAVY.innerData);
 	}
 }

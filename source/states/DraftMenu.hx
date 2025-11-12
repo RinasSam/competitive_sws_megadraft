@@ -59,7 +59,6 @@ class DraftMenu extends FlxState
 	private var currentPlayer:Int = 0;
 
 	private var cards:Vector<Vector<Card>>;
-	private var cardFactory:CardFactory;
 	
 	
 	override public function create()
@@ -171,8 +170,9 @@ class DraftMenu extends FlxState
 		this.p1Cards = new Array<Card>();
 		this.p2Cards = new Array<Card>();
 
-		this.cardFactory = new CardFactory();
-		this.cardFactory.generateCardPool();
+		/* If we do not do this, nothing works for some reason. */
+		Main.cardFactory.initCards();
+		Main.cardFactory.generateCardPool();
 
 		this.cards = new Vector<Vector<Card>>(6);
 		
@@ -185,7 +185,7 @@ class DraftMenu extends FlxState
 
 		for (i in 0 ... this.cards.length) {
 			for (j in 0 ... this.cards[i].length) {
-				var card = this.cardFactory.chosenCards[i * this.cards[i].length + j];
+				var card = Main.cardFactory.chosenCards[i * this.cards[i].length + j];
 				this.cards[i][j] = card;
 				this.cards[i][j].moveSpriteToXY(baseX + this.cards[i][j].width * j, baseY + this.cards[i][j].height * i);
 
