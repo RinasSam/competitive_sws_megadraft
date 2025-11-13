@@ -66,13 +66,13 @@ class MainMenu extends FlxState
 	{
 		this.spriteBackground = new FlxSprite();
 		this.spriteBackground.loadGraphic(AssetPaths.low__png);
-		this.spriteBackground.scale.set(20/3, 20/3);
+		this.spriteBackground.scale.set(20/3 * UserInterfaceUtil.SCALE, 20/3 * UserInterfaceUtil.SCALE);
 		this.spriteBackground.updateHitbox();
 		this.spriteBackground.screenCenter(Y);
 		this.add(this.spriteBackground);
 
 		this.spriteBackground2 = this.spriteBackground.clone();
-		this.spriteBackground2.scale.set(20/3, 20/3);
+		this.spriteBackground2.scale.set(20/3 * UserInterfaceUtil.SCALE, 20/3 * UserInterfaceUtil.SCALE);
 		this.spriteBackground2.updateHitbox();
 		this.spriteBackground2.screenCenter(Y);
 		this.spriteBackground2.x = this.spriteBackground.x + this.spriteBackground.width;
@@ -81,27 +81,23 @@ class MainMenu extends FlxState
 
 	private function _initTexts()
 	{
-		this.textTitle = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textTitle.text = "CompetitiveSWS\nMEGADRAFT";
-		this.textTitle.size = 60;
-		this.textTitle.alignment = FlxTextAlign.CENTER;
-		this.textTitle.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 5, 1);
+		this.textTitle = UserInterfaceUtil.createText(0, UserInterfaceUtil.MARGIN * 4, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4, 60, "CompetitiveSWS\nMEGADRAFT");
+		this.textTitle.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 5 * UserInterfaceUtil.SCALE, 1);
 		this.textTitle.screenCenter(X);
-		this.textTitle.y += UserInterfaceUtil.MARGIN * 4;
 		this.add(this.textTitle);
 	}
 
 	private function _initButtons()
 	{	
-		this.buttonNew = UserInterfaceUtil.createButton("NEW", 16, 2, _onClickNew); 
+		this.buttonNew = UserInterfaceUtil.createButton("NEW", 15, 2, _onClickNew); 
 		this.buttonNew.y += UserInterfaceUtil.MARGIN * 5;
 		this.add(this.buttonNew);
 
-		this.buttonHelp = UserInterfaceUtil.createButton("HELP", 16, 2, _onClickHelp);
+		this.buttonHelp = UserInterfaceUtil.createButton("HELP", 15, 2, _onClickHelp);
 		this.buttonHelp.y = this.buttonNew.y + this.buttonNew.height + UserInterfaceUtil.MARGIN;
 		this.add(this.buttonHelp);
 
-		this.buttonGuide = UserInterfaceUtil.createButton("GUIDE", 16, 2, _onClickGuide);
+		this.buttonGuide = UserInterfaceUtil.createButton("GUIDE", 15, 2, _onClickGuide);
 		this.buttonGuide.y = this.buttonHelp.y + this.buttonHelp.height + UserInterfaceUtil.MARGIN;
 		this.add(this.buttonGuide);
 	}

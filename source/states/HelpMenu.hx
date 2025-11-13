@@ -51,20 +51,17 @@ class HelpMenu extends FlxState {
 
 	private function _initTexts()
 	{
-		this.textHelp = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textHelp.text = "Welcome to the Competitive SWS Megadraft Application!\n\n" + 
-						"You can use this play Megadraft in Stick War: Saga with your friends.\n" +
-						"To get started, press the \'NEW\' button in the main menu, and a randomly generated draft pool will be created. " +
-						"Afterwards, you and your opponent get to choose cards by clicking on the card icons.\n\n\n" + 
-						"Credits:\nConcept: CivilBreak\nProgramming: RinasSam\nAssets: MaxGames\n\n\n\n"+
-						"This app is not developed nor officially endorsed by MaxGames.\n\n\nMade with HaxeFlixel.";
 
-		this.textHelp.alignment = FlxTextAlign.CENTER;
-		this.textHelp.size = 12;
+		var text:String = "Welcome to the Competitive SWS Megadraft Application!\n\n" + 
+						  "You can use this play Megadraft in Stick War: Saga with your friends.\n" +
+						  "To get started, press the \'NEW\' button in the main menu, and a randomly generated draft pool will be created. " +
+						  "Afterwards, you and your opponent get to choose cards by clicking on the card icons.\n\n\n" + 
+						  "Credits:\nConcept: CivilBreak\nProgramming: RinasSam\nAssets: MaxGames\n\n\n\n"+
+						  "This app is not developed nor officially endorsed by MaxGames.\n\n\nMade with HaxeFlixel.";
+
+		this.textHelp = UserInterfaceUtil.createText(0, UserInterfaceUtil.MARGIN * -5, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4, 12, text);
 		this.textHelp.screenCenter();
-		this.textHelp.y -= UserInterfaceUtil.MARGIN * 5;
 		this.add(this.textHelp);
-
 	}
 
 	/* EVENT LISTENERS */

@@ -20,17 +20,26 @@
 package util;
 
 import flixel.addons.ui.FlxUIButton;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 
 class UserInterfaceUtil {
 
-	public static final MARGIN:Int = 5;
-	public static final SCREEN_WIDTH:Int = 640;
-	public static final SCREEN_HEIGHT:Int = 480;
+	/* We'll need this to resize everything proper. */
+	public static final SCALE:Float = 3/2;
+
+	public static final MARGIN:Float = 5 * SCALE;
+	public static final SCREEN_WIDTH:Int = Std.int(640 * SCALE);
+	public static final SCREEN_HEIGHT:Int = Std.int(480 * SCALE);
+
 
 	public static function createButton(label:String, fontSize:Int, scale:Float, onClick:Void->Void, isCentered:Bool = true) : FlxUIButton
 	{
+		/* Makes life easier. */
+		scale *= SCALE;
+		fontSize = Math.floor(fontSize * SCALE);
+
 		var button:FlxUIButton = new FlxUIButton(0, 0, label, onClick);
 		button.scale.set(scale, scale);
 		button.updateHitbox();
@@ -42,5 +51,17 @@ class UserInterfaceUtil {
 		}
 
 		return button;
+	}
+
+	public static function createText(x:Float, y:Float, width:Float, fontSize:Int, text:String, centered:Bool = true)
+	{
+		fontSize = Math.floor(fontSize * SCALE);
+
+		var text:FlxText = new FlxText(x, y, width, text, fontSize);
+		if (centered) {
+			text.alignment = CENTER;
+		}
+
+		return text;
 	}
 }

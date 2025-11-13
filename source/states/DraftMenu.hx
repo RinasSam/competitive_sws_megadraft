@@ -21,7 +21,6 @@ package states;
 
 
 import cards.Card;
-import cards.CardFactory;
 
 import flixel.addons.ui.FlxUIButton;
 import flixel.FlxSprite;
@@ -93,13 +92,13 @@ class DraftMenu extends FlxState
 	{
 		this.spriteBackground = new FlxSprite();
 		this.spriteBackground.loadGraphic(AssetPaths.low__png);
-		this.spriteBackground.scale.set(20/3, 20/3);
+		this.spriteBackground.scale.set(20/3 * UserInterfaceUtil.SCALE, 20/3 * UserInterfaceUtil.SCALE);
 		this.spriteBackground.updateHitbox();
 		this.spriteBackground.screenCenter(Y);
 		this.add(this.spriteBackground);
 
 		this.spriteBackground2 = this.spriteBackground.clone();
-		this.spriteBackground2.scale.set(20/3, 20/3);
+		this.spriteBackground.scale.set(20/3 * UserInterfaceUtil.SCALE, 20/3 * UserInterfaceUtil.SCALE);
 		this.spriteBackground2.updateHitbox();
 		this.spriteBackground2.screenCenter(Y);
 		this.spriteBackground2.x = this.spriteBackground.x + this.spriteBackground.width;
@@ -107,46 +106,42 @@ class DraftMenu extends FlxState
 	}
 
 	private function _initTexts()
-	{	
-		this.textExplanation = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textExplanation.text = "Click on a card to choose!\n(Green = P1, Red = P2, Black = Draft Complete)";
-		this.textExplanation.size = 12;
-		this.textExplanation.alignment = FlxTextAlign.CENTER;
-		this.textExplanation.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
+	{
+		var text:String = "Click on a card to choose!\n(Green = P1, Red = P2, Black = Draft Complete)";
+		this.textExplanation = UserInterfaceUtil.createText(0, UserInterfaceUtil.MARGIN * 2, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4, 12, text);
+		this.textExplanation.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2 * UserInterfaceUtil.SCALE, 1);
 		this.textExplanation.screenCenter(X);
-		this.textExplanation.y += UserInterfaceUtil.MARGIN * 4;
 		this.add(textExplanation);
 
-		this.textP1 = new FlxText(0, 0, UserInterfaceUtil.MARGIN * 10);
-		this.textP1.text = "P1";
-		this.textP1.size = 20;
-		this.textP1.alignment = FlxTextAlign.CENTER;
-		this.textP1.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
+		this.textP1 = UserInterfaceUtil.createText(UserInterfaceUtil.MARGIN, UserInterfaceUtil.MARGIN, UserInterfaceUtil.MARGIN * 10, 20, "P1", false);
+		this.textP1.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2 * UserInterfaceUtil.SCALE, 1);
 		this.textP1.setColorTransform(1, 1, 1, 1, 0, 200, 0, 0);
-		this.textP1.x = textP1.y = UserInterfaceUtil.MARGIN;
 		this.add(textP1);
 
-		this.textP2 = new FlxText(0, 0, UserInterfaceUtil.MARGIN * 10);
-		this.textP2.text = "P2";
-		this.textP2.size = 20;
-		this.textP2.alignment = FlxTextAlign.CENTER;
-		this.textP2.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
+		this.textP2 = UserInterfaceUtil.createText(UserInterfaceUtil.SCREEN_WIDTH - this.textP1.width - UserInterfaceUtil.MARGIN, this.textP1.y, UserInterfaceUtil.MARGIN * 10, 20, "P2"); 
+		this.textP2.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2 * UserInterfaceUtil.SCALE, 1);
 		this.textP2.setColorTransform(1, 1, 1, 1, 200, 0, 0, 0);
-		this.textP2.x = UserInterfaceUtil.SCREEN_WIDTH - this.textP2.width - UserInterfaceUtil.MARGIN;
-		this.textP2.y = textP1.y;
 		this.add(textP2);
 	}
 
 	private function _initAreas()
 	{
-		this.p1Area = new FlxSprite(this.textP1.x, this.textP1.y + this.textP1.height + UserInterfaceUtil.MARGIN);
+		this.p1Area = new FlxSprite();
 		this.p1Area.loadGraphic(AssetPaths.p1area__png);
 		this.p1Area.setColorTransform(0.5, 1, 0.5, 1, 0, 100, 0, 0);
+		this.p1Area.scale.set(UserInterfaceUtil.SCALE, UserInterfaceUtil.SCALE);
+		this.p1Area.updateHitbox();
+		this.p1Area.x = this.textP1.x;
+		this.p1Area.y = this.textP1.y + this.textP1.height + UserInterfaceUtil.MARGIN;
 		this.add(this.p1Area);
 
-		this.p2Area = new FlxSprite(this.textP2.x - this.textP2.width - UserInterfaceUtil.MARGIN, this.textP2.y + this.textP2.height + UserInterfaceUtil.MARGIN);
+		this.p2Area = new FlxSprite();
 		this.p2Area.loadGraphic(AssetPaths.p2area__png);
 		this.p2Area.setColorTransform(1, 0.5, 0.5, 1, 100, 0, 0, 0);
+		this.p2Area.scale.set(UserInterfaceUtil.SCALE, UserInterfaceUtil.SCALE);
+		this.p2Area.updateHitbox();
+		this.p2Area.x = this.textP2.x - this.textP2.width - UserInterfaceUtil.MARGIN;
+		this.p2Area.y = this.textP2.y + this.textP2.height + UserInterfaceUtil.MARGIN;
 		this.add(this.p2Area);
 	}
 

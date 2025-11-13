@@ -21,7 +21,6 @@ package states;
 
 
 import cards.Card.Attributes;
-import cards.CardFactory;
 
 import flixel.addons.ui.FlxUIButton;
 import flixel.FlxG;
@@ -56,12 +55,8 @@ class GuideMenu extends FlxState {
 
 	private function _initTexts()
 	{
-		this.textCenter = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textCenter.text = 'Card Categories and Options:\n\n';
-		this.textCenter.alignment = FlxTextAlign.CENTER;
-		this.textCenter.size = 12;
+		this.textCenter = UserInterfaceUtil.createText(0, UserInterfaceUtil.MARGIN, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4, 12, "Card Categories and Options:\n\n");
 		this.textCenter.screenCenter(X);
-		this.textCenter.y = UserInterfaceUtil.MARGIN;
 		this.add(this.textCenter);
 
 		var totalCards:Int = 0;
@@ -69,22 +64,21 @@ class GuideMenu extends FlxState {
 			totalCards += att;
 		}
 
-		this.textGuide = new FlxText(0, 0, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4);
-		this.textGuide.text = 'Heavy Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_HEAVY]} available):\n\n' +
-							  'Light Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_LIGHT]} available):\n\n' +
-							  'Splash Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_SPLASH]} available):\n\n' +
-							  'Support Unit (${Main.cardFactory.mapAttributePool[SUPPORT]} available):\n\n' +
-							  'Anti-Backline/Frontline General (${Main.cardFactory.mapAttributePool[GENERAL_FRONTLINE]} available):\n\n' +
-							  'Mythics (${Main.cardFactory.mapAttributePool[MYTHIC]} available):\n\n' +
-							  'Defense Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_DEFENSE]} available):\n\n' +
-							  'Tower Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_TOWER]} available):\n\n' +
-							  'Economy Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_ECONOMY]} available):\n\n' +
-							  'Magic/Filler Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_MISC]} available):\n\n' +
-							  'Light Spells (${Main.cardFactory.mapAttributePool[SPELL_LIGHT]} available):\n\n' +
-							  'Heavy Spells (${Main.cardFactory.mapAttributePool[SPELL_HEAVY]} available):\n\n' +
-							  'Total cards per pool: ${totalCards}.';
-		this.textGuide.size = 12;
-		this.textGuide.y = this.textCenter.y + this.textCenter.height;
+		var text:String = 'Heavy Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_HEAVY]} available):\n\n' +
+						  'Light Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_LIGHT]} available):\n\n' +
+						  'Splash Damage Unit (${Main.cardFactory.mapAttributePool[DAMAGE_SPLASH]} available):\n\n' +
+						  'Support Unit (${Main.cardFactory.mapAttributePool[SUPPORT]} available):\n\n' +
+						  'Anti-Backline/Frontline General (${Main.cardFactory.mapAttributePool[GENERAL_FRONTLINE]} available):\n\n' +
+						  'Mythics (${Main.cardFactory.mapAttributePool[MYTHIC]} available):\n\n' +
+						  'Defense Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_DEFENSE]} available):\n\n' +
+						  'Tower Enchantment (${Main.cardFactory.mapAttributePool[ENCHANTMENT_TOWER]} available):\n\n' +
+						  'Economy Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_ECONOMY]} available):\n\n' +
+						  'Magic/Filler Enchantments (${Main.cardFactory.mapAttributePool[ENCHANTMENT_MISC]} available):\n\n' +
+						  'Light Spells (${Main.cardFactory.mapAttributePool[SPELL_LIGHT]} available):\n\n' +
+						  'Heavy Spells (${Main.cardFactory.mapAttributePool[SPELL_HEAVY]} available):\n\n' +
+						  'Total cards per pool: ${totalCards}.';
+
+		this.textGuide = UserInterfaceUtil.createText(0, this.textCenter.y + this.textCenter.height, UserInterfaceUtil.SCREEN_WIDTH - UserInterfaceUtil.MARGIN * 4, 12, text, false);
 		this.add(this.textGuide);
 	}
 
@@ -105,8 +99,9 @@ class GuideMenu extends FlxState {
 			SPELL_LIGHT,
 			SPELL_HEAVY];
 
-		var scale:Float = 0.145;
-		var baseX:Float = (this.textCenter.x + UserInterfaceUtil.MARGIN * 8) * (1 / scale);
+		var scale:Float = 0.15 * UserInterfaceUtil.SCALE;
+		var baseX:Float = (this.textCenter.x + UserInterfaceUtil.MARGIN * 10) * (1 / scale);
+		baseX *= UserInterfaceUtil.SCALE;
 		var baseY:Float = this.textGuide.y;
 
 		/* If we do not do this, nothing works for some reason. */

@@ -20,6 +20,7 @@
 package cards;
 
 
+import util.UserInterfaceUtil;
 import flixel.FlxSprite;
 
 
@@ -59,7 +60,7 @@ class Card extends FlxSprite {
 		
 		if (graphic != null) {
 			this.loadGraphic(graphic);
-			this.scaleTo(0.30);
+			this.scaleTo(0.30 * UserInterfaceUtil.SCALE);
 		}
 	}
 
